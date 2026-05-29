@@ -24,7 +24,7 @@ public class Driver {
             // create MAX size threadpool
             ExecutorService pool = Executors.newFixedThreadPool(MAX);
 
-            // initialize stations and conveyers
+            // initialize stations and Conveyors
             Scanner in = new Scanner(new File("org/example/" + args[0]));
 
             // read first line of config for # of stations
@@ -32,13 +32,13 @@ public class Driver {
 
             // create an array of stations (threads)
             Station[] stationArray = new Station[numStations];
-            // create an array of conveyers
-            Conveyer[] conveyerArray = new Conveyer[numStations];
+            // create an array of Conveyors
+            Conveyor[] ConveyorArray = new Conveyor[numStations];
 
             // populate array with new stations with their assigned workloads
             for(int i = 0; i < numStations; i++) {
-                stationArray[i] = new Station(in.nextInt(), i - 1, numStations);
-                conveyerArray[i] = new Conveyer(i);
+                stationArray[i] = new Station(in.nextInt(), i, numStations);
+                ConveyorArray[i] = new Conveyor(i);
             }
 
             //close file
@@ -56,18 +56,28 @@ public class Driver {
 
             for(int i = 0; i < numStations; i++)
             {
-                System.out.print("\t% % % % ROUTING STATION S" + i + " Initializing Conveyers" + " % % % %\n");
-                System.out.print("\t    Routing Station S" + i + ": Input conveyer assigned to conveyer number C" + stationArray[i].leftConveyer + "\n");
-                System.out.print("\t    Routing Station S" + i + ": Output conveyer assigned to conveyer number C" + stationArray[i].rightConveyer + "\n");
+                System.out.print("\t% % % % ROUTING STATION S" + i + " Initializing Conveyors" + " % % % %\n");
+                System.out.print("\t    Routing Station S" + i + ": Input conveyor assigned to conveyor number C" + stationArray[i].rightConveyor + "\n");
+                System.out.print("\t    Routing Station S" + i + ": Output conveyor assigned to conveyor number C" + stationArray[i].leftConveyor + "\n");
                 System.out.print("\t    Routing Station S" + i + ": Workload set. Station S" + i + ": has a total of " + stationArray[i].workload + " package groups to move\n");
                 System.out.print("\t% % % % ROUTING STATION S" + i + ": Awaiting Signal From Control To Begin Operations" + " % % % %\n\n");
 
             }
 
+            // START THE THREADS
+            for(int i = 0; i < numStations; i++)
+            {
+                pool.execute(stationArray[i]);
+            }
+
+            // shutdown sequence
+
             //TODO: print "signal recieved from control, station online
+            pool.shutdown();
+
+            // System.out.print("**********Package Management Facility Simulation Ends!**********\n");
         } catch(FileNotFoundException e) {
                 System.out.print("\tFile " + "\"" + args[0] + "\"" + " not found!\n");
         }
-        System.out.print("**********Package Management Facility Simulation Ends!**********\n");
     }
 }

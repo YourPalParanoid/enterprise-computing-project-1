@@ -15,14 +15,18 @@ public class Station implements Runnable{
     public int workload;
     public int number;
 
-    public int rightConveyer;
-    public int leftConveyer;
+    public int rightConveyor;
+    public int leftConveyor;
 
     public Station(int workload, int number, int numStations){
         this.workload = workload;
         this.number = number;
-        this.rightConveyer = number;
-        this.leftConveyer = number % numStations;
+        this.rightConveyor = number;
+
+        if(number == 0)
+            this.leftConveyor = numStations - 1;
+        else
+            this.leftConveyor = number - 1;
     }
 
     private void sleep(){
@@ -34,6 +38,6 @@ public class Station implements Runnable{
     }
 
     public void run(){
-
+        System.out.print("station S" + number + " is running!\n");
     }
 }
