@@ -1,0 +1,73 @@
+/*
+Name: Christopher Albear
+Course: CNT 4714 Summer 2026
+Assignment title: Project 1 – Multi-threaded programming in Java
+Date: June 7, 2026
+Class: Driver
+*/
+package org.example;
+
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Driver {
+    static int MAX = 10;
+    static void main(String[] args) {
+        try {
+            System.out.print("Summer 2026 - Project 1 - Package Management Facility Simulator\n\n");
+            System.out.print("**********Package Management Facility Simulation Begins!**********\n\n");
+
+            // create MAX size threadpool
+            ExecutorService pool = Executors.newFixedThreadPool(MAX);
+
+            // initialize stations and conveyers
+            Scanner in = new Scanner(new File("org/example/" + args[0]));
+
+            // read first line of config for # of stations
+            int numStations = in.nextInt();
+
+            // create an array of stations (threads)
+            Station[] stationArray = new Station[numStations];
+            // create an array of conveyers
+            Conveyer[] conveyerArray = new Conveyer[numStations];
+
+            // populate array with new stations with their assigned workloads
+            for(int i = 0; i < numStations; i++) {
+                stationArray[i] = new Station(in.nextInt(), i - 1, numStations);
+                conveyerArray[i] = new Conveyer(i);
+            }
+
+            //close file
+            in.close();
+
+            // print initial arrangement
+            System.out.print("\tThe parameters for this run are:\n\n");
+
+            System.out.print("\tThere are " + numStations + " routing stations in this simulation run\n\n");
+            for(int i = 0; i < numStations; i++) {
+                System.out.print("\tRouting station S" + i + " has total workload of " + stationArray[i].workload + " package groups\n");
+            }
+
+            System.out.print("\n");
+
+            for(int i = 0; i < numStations; i++)
+            {
+                System.out.print("\t% % % % ROUTING STATION S" + i + " Initializing Conveyers" + " % % % %\n");
+                System.out.print("\t    Routing Station S" + i + ": Input conveyer assigned to conveyer number C" + stationArray[i].leftConveyer + "\n");
+                System.out.print("\t    Routing Station S" + i + ": Output conveyer assigned to conveyer number C" + stationArray[i].rightConveyer + "\n");
+                System.out.print("\t    Routing Station S" + i + ": Workload set. Station S" + i + ": has a total of " + stationArray[i].workload + " package groups to move\n");
+                System.out.print("\t% % % % ROUTING STATION S" + i + ": Awaiting Signal From Control To Begin Operations" + " % % % %\n\n");
+
+            }
+
+            //TODO: print "signal recieved from control, station online
+        } catch(FileNotFoundException e) {
+                System.out.print("\tFile " + "\"" + args[0] + "\"" + " not found!\n");
+        }
+        System.out.print("**********Package Management Facility Simulation Ends!**********\n");
+    }
+}
