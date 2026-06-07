@@ -13,6 +13,7 @@ import java.util.concurrent.*;
 
 public class Driver {
     static int MAX = 10;
+    static int coutndown;
 
     static void main(String[] args) {
         try {
@@ -27,6 +28,7 @@ public class Driver {
 
             // read first line of config for # of stations
             int numStations = in.nextInt();
+            Driver.coutndown = numStations;
 
             CountDownLatch startSignal = new CountDownLatch(1);
             CountDownLatch doneSignal = new CountDownLatch(numStations);
@@ -90,6 +92,10 @@ public class Driver {
         } catch(FileNotFoundException e) {
                 System.out.print("\tFile " + "\"" + args[0] + "\"" + " not found!\n");
         }
-        // System.out.print("**********Package Management Facility Simulation Ends!**********\n");
+
+        while (Driver.coutndown != 0){System.out.print("");}
+
+        System.out.print("\nAll stations offline...\n");
+        System.out.print("**********Package Management Facility Simulation Ends!**********\n");
     }
 }

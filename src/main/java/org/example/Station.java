@@ -55,7 +55,7 @@ public class Station implements Runnable{
     }
 
     public void work(){
-        System.out.print(" \n ** Routing station S" + number + ": **CURRENTLY HARD AT WORK MOVING PACKAGES**\n");
+        System.out.print(" \n ** Routing station S" + number + ": **CURRENTLY HARD AT WORK MOVING PACKAGES **\n");
         sleep();
     }
 
@@ -84,15 +84,15 @@ public class Station implements Runnable{
             {
                 if(rightConveyor.lockConveyor())
                 {
-                    System.out.print(" \nRouting station S" + number + ": currently holds lock on input conveyor C" + rightConveyor.number + "\n");
+                    System.out.print(" Routing station S" + number + ": currently holds lock on input conveyor C" + rightConveyor.number + "\n");
                     if(leftConveyor.lockConveyor())
                     {
-                        System.out.print(" \nRouting station S" + number + ": currently holds lock on output conveyor C" + leftConveyor.number + "\n");
+                        System.out.print(" Routing station S" + number + ": currently holds lock on output conveyor C" + leftConveyor.number + "\n");
                         hasBothLocks = true;
                     }
                     else
                     {
-                        System.out.print(" \nRouting station S" + number + ": UNABLE TO ACQUIRE LOCK FOR OUTPUT CONVEYOR C" + leftConveyor.number + "\n");
+                        System.out.print(" Routing station S" + number + ": UNABLE TO ACQUIRE LOCK FOR OUTPUT CONVEYOR C" + leftConveyor.number + "\n");
                         System.out.print(" \nSYNCHRONIZATION ISSUE: Station S" + leftConveyor.number + " currently holds the lock on output conveyor C" + leftConveyor.number +
                                 ". Station S" + number + " releasing lock on input conveyor C" + rightConveyor.number + "\n");
                         rightConveyor.unlockConveyor();
@@ -101,13 +101,13 @@ public class Station implements Runnable{
                 }
             }
 
-            System.out.print("******Routing station S" + number + ": currently holds locks on both input conveyor C" + rightConveyor.number + " and output conveyor C" + leftConveyor.number + "\n");
+            System.out.print("\n******Routing station S" + number + ": currently holds locks on both input conveyor C" + rightConveyor.number + " and output conveyor C" + leftConveyor.number + "\n");
             work();
 
             System.out.print(" \nRouting station S" + number + ": Package group completed - " + (workload - i) + " package groups remaining to move\n");
-            System.out.print(" \nRouting station S" + number + ": Unlocks/releases input conveyor C" + rightConveyor.number + "\n");
+            System.out.print(" Routing station S" + number + ": Unlocks/releases input conveyor C" + rightConveyor.number + "\n");
             rightConveyor.unlockConveyor();
-            System.out.print(" \nRouting station S" + number + ": Unlocks/releases output conveyor C" + leftConveyor.number + "\n");
+            System.out.print(" Routing station S" + number + ": Unlocks/releases output conveyor C" + leftConveyor.number + "\n");
             leftConveyor.unlockConveyor();
             // acquire input lock
 
@@ -117,6 +117,7 @@ public class Station implements Runnable{
                     // unlock both
         }
         System.out.print("\n\n ## Routing station S" + number + ": going offline - work completed! BYE! ##\n\n");
+        Driver.coutndown -= 1;
 
     }
 }
